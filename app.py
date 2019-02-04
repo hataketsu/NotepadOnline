@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 def gen_uuid():
     uuid = ''.join(random.choices(string.ascii_lowercase + string.digits, k=9))
-    if os.path.exists('./notes'):
+    if not os.path.exists('./notes'):
         os.mkdir('./notes')
     while os.path.isfile('./notes/{}.txt'.format(uuid)):
         uuid = ''.join(random.choices(string.ascii_lowercase + string.digits, k=9))
