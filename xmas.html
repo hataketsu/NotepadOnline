@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Christmas Tree</title>
+    <style>
+        body {
+            background-color: black; /* Set the background to black */
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tree {
+            font-family: monospace;
+            white-space: pre;
+            line-height: 1.2;
+            color: white; /* Make tree structure white */
+        }
+        .blinky {
+            /* Initially all lights are set to white */
+            color: white;
+            animation: blinky 1s step-end infinite;
+        }
+
+        @keyframes blinky {
+            50% { opacity: 0; } /* Lights blink by changing opacity */
+        }
+
+        /* Add bright versions of the colors */
+        .red { color: red; }
+        .green { color: lime; }
+        .blue { color: dodgerblue; }
+        .yellow { color: yellow; }
+    </style>
+</head>
+<body>
+    <div id="tree" class="tree"></div>
+
+    <script>
+        const tree = document.getElementById('tree');
+        
+        // Define the basic shape of the tree with placeholders
+        const treeShape = [
+            '        *        ',
+            '       ***       ',
+            '      **o**      ',
+            '     **o*o**     ',
+            '    **o***o**    ',
+            '   ***o*****o*   ',
+            '  **o********o*  ',
+            ' *****o*****o**  ',
+            '*********o*******',
+            '       ***       ',
+            '       ***       '
+        ];
+
+        // Define colors for the lights
+        const colors = ['red', 'green', 'blue', 'yellow'];
+
+        function createSpan(text) {
+            const span = document.createElement('span');
+            span.textContent = text;
+            return span;
+        }
+
+        function renderTree() {
+            tree.innerHTML = ''; // Clear tree container
+            treeShape.forEach(line => {
+                const lineDiv = document.createElement('div');
+                for (const char of line) {
+                    if (char === 'o') {
+                        if (Math.random() < 0.5) { // Use 0.5 probability to decide if the light is on
+                            const colorClass = colors[Math.floor(Math.random() * colors.length)];
+                            const colorSpan = createSpan('o');
+                            colorSpan.classList.add('blinky', colorClass);
+                            lineDiv.appendChild(colorSpan);
+                        } else {
+                            lineDiv.appendChild(createSpan(char));
+                        }
+                    } else {
+                        lineDiv.appendChild(createSpan(char));
+                    }
+                }
+                tree.appendChild(lineDiv);
+            });
+        }
+
+        renderTree();
+        setInterval(renderTree, 1000);  // Redraw the tree every second to change lights
+    </script>
+</body>
+</html>
